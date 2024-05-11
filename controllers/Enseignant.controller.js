@@ -1,6 +1,7 @@
 const Enseignant = require('../models/Enseignant');
 const Compte=require('../models/Compte')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Make sure this is added
 
 
 const EnseignantController = {
@@ -95,6 +96,9 @@ const EnseignantController = {
   addCompteToEnseignant: async (req, res) => {
     const id = req.params.id; // Get the enseignant ID from the URL
     const { nomUtilisateur, motDePasse } = req.body;
+    if (!nomUtilisateur || !motDePasse) {
+      return res.status(400).send('Username and password are required.');
+    }
     const role = "formateur";
 
     try {
@@ -110,8 +114,11 @@ const EnseignantController = {
         return res.status(400).send('Nom d\'utilisateur déjà existant.');
       }
 
-      // Hash the password
+      if (!motDePasse || motDePasse.trim() === '') {
+        return res.status(400).send('Mot de passe requis.');
+      }
       const hashedPassword = await bcrypt.hash(motDePasse, 10);
+      
 
       // Create a new compte (account)
       utilisateur = new Compte({
