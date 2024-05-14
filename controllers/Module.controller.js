@@ -3,6 +3,7 @@
   const Formation = require('../models/Formation');
   const Etudiant = require('../models/Etudiant');
   const Emploi = require('../models/Emploi');
+  const { uploadToCloudinary } = require('../config/cloudinary');
 
   const ModuleController = {
     getAllModules: async (req, res) => {
@@ -245,24 +246,43 @@
       }
     
     },
-    addDocumentToModule :async (req, res) => {
+    
+    addDocumentToModule : async (req, res) => {
+      console.log(req.file); 
+      console.log(req.body);
       const { moduleId } = req.params;
-      const { fileName, description } = req.body;
+      const { description } = req.body;
+      const file = req.file; // The file uploaded via Multer
+    
+      if (!file) {
+        return res.status(400).send('No file uploaded');
+      }
     
       try {
-        // Find the module by ID and update it by pushing a new document into the documents array
-        const module = await Module.findByIdAndUpdate(moduleId, {
-          $push: { documents: { fileName, description } }
-        }, { new: true });  // Return the updated module document
+        // Now passing the file buffer and original filename to Cloudinary
+        const uploadResult = await uploadToCloudinary(file.buffer, file.originalname);
     
-        if (!module) {
+        // Update the module with the new document
+        const updatedModule = await Module.findByIdAndUpdate(moduleId, {
+          $push: {
+            documents: {
+              fileName: uploadResult.url,  // Assuming you want to use the URL as the file name
+              description: req.body.description,
+              url: uploadResult.url,
+              publicId: uploadResult.public_id
+            }
+          }
+        }, { new: true });
+    
+        if (!updatedModule) {
           return res.status(404).send('Module not found');
         }
     
-        res.status(200).json({ success: true, data: module });
+        res.status(200).json({ success: true, data: updatedModule });
       } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        console.error('Failed to upload file:', error);
+        res.status(500).send('Error uploading file');
       }
     }
-    
   }; module.exports = ModuleController;
+  

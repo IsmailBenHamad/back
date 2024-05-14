@@ -1,6 +1,10 @@
+
+const moduleController = require('../controllers/Module.controller');
 const express = require('express');
 const router = express.Router();
-const moduleController = require('../controllers/Module.controller');
+const multer = require('multer');
+const { addDocumentToModule } = require('../controllers/Module.controller');
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/modules', moduleController.getAllModules);
 router.get('/modules/:id', moduleController.getModuleById);
@@ -12,6 +16,6 @@ router.delete('/modules/:moduleId/students/:etudiantId', moduleController.remove
 router.post('/modules/:moduleId/addEmploi/:emploiId', moduleController.addEmploiToModule);
 router.get('/modules/:moduleId/students/notInModule', moduleController.getStudentsNotInModule);
 router.delete('/modules/:moduleId/emploi/:emploiId', moduleController.deleteEmploiFromModule);
-router.post('/modules/:moduleId/documents', moduleController.addDocumentToModule);
+router.post('/modules/:moduleId/documents', upload.single('file'), addDocumentToModule);
 
 module.exports = router;
