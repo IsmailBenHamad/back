@@ -2,7 +2,7 @@ const multer = require('multer');
 const { uploadToCloudinary } = require('../config/cloudinary');
 
 // Set up Multer storage configuration
-const storage = multer.memoryStorage(); // Use memory storage for handling files
+const storage = multer.memoryStorage(); 
 
 // Set up Multer configuration
 const multerUpload = multer({ storage: storage });
@@ -16,7 +16,7 @@ const upload = async (req, res, next) => {
         }
 
         console.log('Uploading file to Cloudinary');
-        const result = await uploadToCloudinary(req.file.buffer);
+        const result = await uploadToCloudinary(req.file.buffer, req.file.originalname); // Include originalname here
         req.cloudinaryUrl = result.secure_url;
         next();
     } catch (error) {
