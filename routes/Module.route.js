@@ -17,5 +17,6 @@ router.post('/modules/:moduleId/addEmploi/:emploiId', moduleController.addEmploi
 router.get('/modules/:moduleId/students/notInModule', moduleController.getStudentsNotInModule);
 router.delete('/modules/:moduleId/emploi/:emploiId', moduleController.deleteEmploiFromModule);
 router.post('/modules/:moduleId/documents', upload.single('file'), addDocumentToModule);
+router.delete('/modules/:moduleId/documents/:documentId', moduleController.removeDocumentFromModule);
 
 module.exports = router;

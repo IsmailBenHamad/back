@@ -4,6 +4,7 @@
   const Etudiant = require('../models/Etudiant');
   const Emploi = require('../models/Emploi');
   const { uploadToCloudinary } = require('../config/cloudinary');
+  const removeFromCloudinary = require('../config/cloudinary').removeFromCloudinary;
 
   const ModuleController = {
     getAllModules: async (req, res) => {
@@ -283,6 +284,33 @@
         console.error('Failed to upload file:', error);
         res.status(500).send('Error uploading file');
       }
+    },
+    removeDocumentFromModule: async (req, res) => {
+      const { moduleId, documentId } = req.params;
+    
+      try {
+        const module = await Module.findById(moduleId);
+        if (!module) {
+          return res.status(404).send('Module not found');
+        }
+    
+        // Check if the document exists
+        const documentIndex = module.documents.findIndex(doc => doc._id.toString() === documentId);
+        if (documentIndex === -1) {
+          return res.status(404).send('Document not found');
+        }
+    
+        // Remove the document from the documents array
+        module.documents.splice(documentIndex, 1);
+        await module.save();
+    
+        res.status(200).send({ message: 'Document removed successfully', module });
+      } catch (error) {
+        console.error('Error removing document from module:', error);
+        res.status(500).send('Internal Server Error');
+      }
     }
+    
+    
   }; module.exports = ModuleController;
   
