@@ -29,10 +29,11 @@ const CategorieRoute = require('./routes/Categorie.route');
 const FormationRoute = require('./routes/Formations.route');
 const ModuleRoute = require('./routes/Module.route');
 const AuthController = require('./routes/auth.routes');
-const absenceController=require('./routes/Absence.route')
+const AbsenceController=require('./routes/Absence.route')
 const noteRoutes = require('./routes/Note.route');
-const compteRoutes = require('./routes/Compte.route');  // Path should point to where your routes are defined
-
+const compteRoutes = require('./routes/Compte.route'); 
+const FormationPopulaire= require('./routes/FormationPopulaire.route');
+ 
 //const PresenceRoute =require('./routes/Presence.routes');
 
 
@@ -43,9 +44,11 @@ app.use('/api/', EmploiRouter);
 app.use('/api/', CategorieRoute);
 app.use('/api/', FormationRoute);
 app.use('/api/', ModuleRoute);
-app.use('/api/', absenceController);
+app.use('/api/', AbsenceController);
 app.use('/api', noteRoutes);
-app.use('/api', compteRoutes);  // Prefixing with '/api'
+app.use('/api', compteRoutes);  
+app.use('/api', FormationPopulaire);  
+// Prefixing with '/api'
 
 //app.use('/api/', PresenceRoute);
 

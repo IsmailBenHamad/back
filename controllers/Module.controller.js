@@ -3,6 +3,7 @@
   const Formation = require('../models/Formation');
   const Etudiant = require('../models/Etudiant');
   const Emploi = require('../models/Emploi');
+  const Absence =require ('../models/Absence')
   const { uploadToCloudinary } = require('../config/cloudinary');
   const removeFromCloudinary = require('../config/cloudinary').removeFromCloudinary;
 
@@ -285,6 +286,7 @@
         res.status(500).send('Error uploading file');
       }
     },
+    
     removeDocumentFromModule: async (req, res) => {
       const { moduleId, documentId } = req.params;
     
@@ -309,8 +311,9 @@
         console.error('Error removing document from module:', error);
         res.status(500).send('Internal Server Error');
       }
-    }
+    },
     
+
     
   }; module.exports = ModuleController;
   

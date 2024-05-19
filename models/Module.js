@@ -38,18 +38,9 @@ const moduleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Emploi'
   },
-  documents: [documentSchema] ,
-  absences: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Absence'
-  }],
-  notes: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Note'
-  }],
+  documents: [documentSchema] 
  
   
-
 });
 
 const Module = mongoose.model('Module', moduleSchema);
