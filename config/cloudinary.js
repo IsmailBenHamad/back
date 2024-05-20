@@ -8,18 +8,19 @@ cloudinary.config({
 
 // Function to upload files to Cloudinary
 function uploadToCloudinary(fileBuffer, originalFilename) {
-  const extension = originalFilename.split('.').pop();
-  const resourceType = extension === 'pdf' ? 'raw' : 'auto'; // Auto will handle images and other supported formats
+  const extension = originalFilename.split('.').pop().toLowerCase();
+  const resourceType = 'image';  // Treat all files as images
 
   return new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream({ resource_type: resourceType },
-          (error, result) => {
-              if (error) reject(error);
-              else resolve(result);
-          })
-      .end(fileBuffer);
+    cloudinary.uploader.upload_stream({ resource_type: resourceType },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      })
+    .end(fileBuffer);
   });
 }
+
 
 // Function to remove files from Cloudinary
 function removeFromCloudinary(publicId) {
