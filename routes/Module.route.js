@@ -18,5 +18,6 @@ router.get('/modules/:moduleId/students/notInModule', moduleController.getStuden
 router.delete('/modules/:moduleId/emploi/:emploiId', moduleController.deleteEmploiFromModule);
 router.post('/modules/:moduleId/documents', upload.single('file'), addDocumentToModule);
 router.delete('/modules/:moduleId/documents/:documentId', moduleController.removeDocumentFromModule);
+router.get('/modules/enseignant/:enseignantId', moduleController.getModulesByEnseignant);
 
 module.exports = router;

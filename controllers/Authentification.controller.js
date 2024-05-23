@@ -75,6 +75,7 @@ exports.login = async (req, res) => {
 
         // Préparer les détails des modules pour la réponse
         const detailedModulesEnseignant = modulesEnseignant.map(module => ({
+          idModule: module._id,
           nomModule: module.nomModule,
           etudiants: module.etudiants,
           emploi: module.emploi,

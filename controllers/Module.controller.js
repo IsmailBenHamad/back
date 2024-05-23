@@ -313,6 +313,25 @@
       }
     },
     
+    getModulesByEnseignant : async (req, res) => {
+      const enseignantId = req.params.enseignantId; // or req.query.enseignantId if passed as a query parameter
+  
+      try {
+          const modules = await Module.find({ enseignant: enseignantId })
+                                      .populate('etudiants')  
+                                      .populate('emploi')
+                                      .populate('formations');
+  
+          if(modules.length === 0) {
+              return res.status(404).json({ message: 'No modules found for this enseignant.' });
+          }
+  
+          res.json(modules);
+      } catch (error) {
+          console.error("Error fetching modules by enseignant:", error);
+          res.status(500).send('Internal Server Error');
+      }
+  }
 
     
   }; module.exports = ModuleController;
