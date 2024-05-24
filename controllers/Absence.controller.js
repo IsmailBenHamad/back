@@ -109,7 +109,6 @@ const AbsenceController = {
     }
 }
 
-
 };
 
 module.exports = AbsenceController;
